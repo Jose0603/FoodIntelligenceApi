@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FoodIntelligence.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,15 @@ namespace FoodIntelligenceApi.Controllers
     [Authorize]
     public class UserListController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
+        public UserListController(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var uerlist= await Task.FromResult(new string[] { "Virat", "Messi", "Ozil", "Lara", "MS Dhoni" });
+            var uerlist= _unitOfWork.CategoriasComidaRepository.GetAll();
             return Ok(uerlist);
         }
     }

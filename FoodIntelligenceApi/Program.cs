@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -55,6 +55,8 @@ builder.Services.AddDbContext<FIntelligenceDbContext>(options => options.UseSqlS
 builder.Services.AddIdentity<AspNetUser, IdentityRole>()
                 .AddEntityFrameworkStores<FIntelligenceDbContext>()
                 .AddDefaultTokenProviders();
+//Addiing Auto Mapper
+//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 // Adding Authentication  
 builder.Services.AddAuthentication(options =>
 {
@@ -62,6 +64,9 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
+
+
+
 
 // Adding Jwt Bearer  
             .AddJwtBearer(options =>

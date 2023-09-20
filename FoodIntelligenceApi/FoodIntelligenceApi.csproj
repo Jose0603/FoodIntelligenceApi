@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FoodIntelligence.Data\FoodIntelligence.Data.csproj" />
     <ProjectReference Include="..\FoodIntelligence.Service\FoodIntelligence.Service.csproj" />
   </ItemGroup>
 
