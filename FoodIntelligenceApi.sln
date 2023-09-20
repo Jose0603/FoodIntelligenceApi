@@ -5,6 +5,10 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodIntelligenceApi", "FoodIntelligenceApi\FoodIntelligenceApi.csproj", "{CE0FACEA-1145-4E82-976F-5D58F4CB1843}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodIntelligence.Data", "FoodIntelligence.Data\FoodIntelligence.Data.csproj", "{E920FE3E-2C3B-4AFE-BD26-F159BEC6C12D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodIntelligence.Service", "FoodIntelligence.Service\FoodIntelligence.Service.csproj", "{085DFBAB-51E3-4A96-BF46-6A8BA0DAE3B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{CE0FACEA-1145-4E82-976F-5D58F4CB1843}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE0FACEA-1145-4E82-976F-5D58F4CB1843}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE0FACEA-1145-4E82-976F-5D58F4CB1843}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E920FE3E-2C3B-4AFE-BD26-F159BEC6C12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E920FE3E-2C3B-4AFE-BD26-F159BEC6C12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E920FE3E-2C3B-4AFE-BD26-F159BEC6C12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E920FE3E-2C3B-4AFE-BD26-F159BEC6C12D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{085DFBAB-51E3-4A96-BF46-6A8BA0DAE3B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{085DFBAB-51E3-4A96-BF46-6A8BA0DAE3B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{085DFBAB-51E3-4A96-BF46-6A8BA0DAE3B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{085DFBAB-51E3-4A96-BF46-6A8BA0DAE3B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
