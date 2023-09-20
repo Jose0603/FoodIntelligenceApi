@@ -10,10 +10,10 @@ namespace FoodIntelligence.Service.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<AspNetUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
-        public AuthService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthService(UserManager<AspNetUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -26,7 +26,7 @@ namespace FoodIntelligence.Service.Services
             if (userExists != null)
                 return (0, "User already exists");
 
-            ApplicationUser user = new()
+            AspNetUser user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),

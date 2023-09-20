@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext "Server=localhost;Database=FInteligence;User Id=sa;Password=admin123*; TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -context "FIntelligenceDbContext2" -f 
