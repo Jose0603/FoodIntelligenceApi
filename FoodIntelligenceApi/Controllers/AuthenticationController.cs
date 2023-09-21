@@ -1,4 +1,4 @@
-﻿using FoodIntelligence.Data.Models;
+﻿using FoodIntelligence.Data.Autentication;
 using FoodIntelligence.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,16 +20,16 @@ namespace FoodIntelligenceApi.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login( LoginModel model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid payload");
-                var (status, message) = await _authService.Login(model);
-                if (status == 0)
-                    return BadRequest(message);
-                return Ok(message);
+                var result = await _authService.Login(model);
+                if (result.Item1 == 0)
+                    return BadRequest(result.Item2);
+                return Ok(result.Item2);
             }
             catch(Exception ex)
             {
@@ -46,10 +46,10 @@ namespace FoodIntelligenceApi.Controllers
             {
             if (!ModelState.IsValid)
                 return BadRequest("Invalid payload");
-            var (status, message) = await _authService.Registeration(model, UserRoles.Admin);
-            if (status == 0)
+            var result = await _authService.Registeration(model, UserRoles.Admin);
+            if (result.Item1 == 0)
             {
-                return BadRequest(message);
+                return BadRequest(result.Item2);
             }
             return CreatedAtAction(nameof(Register), model);
 

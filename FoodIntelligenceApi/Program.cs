@@ -1,4 +1,5 @@
 using FoodIntelligence.Data;
+using FoodIntelligence.Data.Autentication;
 using FoodIntelligence.Data.Models;
 using FoodIntelligence.Service.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -51,9 +52,11 @@ builder.Services.AddSwaggerGen(options =>
 var _GetConnectionString = builder.Configuration.GetConnectionString("connMSSQL");
 builder.Services.AddDbContext<FIntelligenceDbContext>(options => options.UseSqlServer(_GetConnectionString));
 
+builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_GetConnectionString));
+
 // For Identity  
-builder.Services.AddIdentity<AspNetUser, IdentityRole>()
-                .AddEntityFrameworkStores<FIntelligenceDbContext>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 //Addiing Auto Mapper
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());

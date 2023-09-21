@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodIntelligence.Data.Models
-{
+namespace FoodIntelligence.Data.Autentication;
     public class RegistrationModel
     {
         [Required(ErrorMessage = "User Name is required")]
@@ -22,4 +21,4 @@ namespace FoodIntelligence.Data.Models
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
     }
-}
+
