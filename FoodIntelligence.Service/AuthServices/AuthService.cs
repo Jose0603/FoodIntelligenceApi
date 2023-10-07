@@ -33,6 +33,7 @@ namespace FoodIntelligence.Service.Services
                 UserName = model.Username,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
             };
             var createUserResult = await userManager.CreateAsync(user, model.Password);
             if (!createUserResult.Succeeded)
@@ -51,7 +52,11 @@ namespace FoodIntelligence.Service.Services
         {
             var user = await userManager.FindByNameAsync(model.Username);
             if (user == null)
-                return (0, "Invalid username");
+            {
+                user = await userManager.FindByEmailAsync(model.Username);
+                if (user == null)
+                    return (0, "Invalid username");
+            }
             if (!await userManager.CheckPasswordAsync(user, model.Password))
                 return (0, "Invalid password");
 
@@ -80,14 +85,21 @@ namespace FoodIntelligence.Service.Services
                 Issuer = _configuration["JWTKey:ValidIssuer"],
                 Audience = _configuration["JWTKey:ValidAudience"],
                 //Expires = DateTime.UtcNow.AddHours(_TokenExpiryTimeInHour),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddDays(29),
                 SigningCredentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256),
                 Subject = new ClaimsIdentity(claims)
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return new UserInfoToken { Token = tokenHandler.WriteToken(token), FirstName = user.FirstName, LastName = user.LastName };
+            return new UserInfoToken
+            {
+                Token = tokenHandler.WriteToken(token),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
         }
     }
 }

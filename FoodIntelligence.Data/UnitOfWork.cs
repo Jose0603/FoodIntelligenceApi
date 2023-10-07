@@ -30,6 +30,10 @@ namespace FoodIntelligence.Data
         {
             return _databaseContext.SaveChangesAsync(cancellationToken);
         }
+        public Task<int> CommitAsync()
+        {
+            return _databaseContext.SaveChangesAsync();
+        }
 
         ~UnitOfWork()
         {

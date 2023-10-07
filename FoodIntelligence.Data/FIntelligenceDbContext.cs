@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FoodIntelligence.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -204,6 +205,11 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUser>
         });
 
         OnModelCreatingPartial(modelBuilder);
+        modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
+        modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
+        modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
+
+
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

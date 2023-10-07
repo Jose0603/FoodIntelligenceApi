@@ -13,5 +13,6 @@ namespace FoodIntelligence.Data
         ICategoriasComidaRepository CategoriasComidaRepository { get; }
         //int Save();
         Task<int> CommitAsync(CancellationToken cancellationToken);
+        Task<int> CommitAsync();
     }
 }
