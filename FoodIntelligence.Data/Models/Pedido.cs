@@ -23,5 +23,5 @@ public partial class Pedido
 
     public virtual ICollection<DetallesPedido> DetallesPedidos { get; set; } = new List<DetallesPedido>();
 
-   public virtual AspNetUser? IdusuarioNavigation { get; set; }
+   public virtual AspNetUsers? IdusuarioNavigation { get; set; }
 }

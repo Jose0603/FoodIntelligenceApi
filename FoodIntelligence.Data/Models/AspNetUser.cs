@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FoodIntelligence.Data.Models;
 
-public partial class AspNetUser : IdentityUser
+public partial class AspNetUsers : IdentityUser
 {
 
     public string FirstName { get; set; } = null!;

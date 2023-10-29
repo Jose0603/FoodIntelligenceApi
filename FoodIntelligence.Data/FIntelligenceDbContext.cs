@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoodIntelligence.Data;
 
-public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUser>
+public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUsers>
 {
     public FIntelligenceDbContext()
     {
@@ -20,7 +20,7 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUser>
 
     public virtual DbSet<Alergia> Alergias { get; set; }
 
-    public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+    public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
 
     public virtual DbSet<CategoriasComidum> CategoriasComida { get; set; }
 
@@ -53,7 +53,7 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUser>
             entity.Property(e => e.Nombre).HasMaxLength(255);
         });
 
-        modelBuilder.Entity<AspNetUser>(entity =>
+        modelBuilder.Entity<AspNetUsers>(entity =>
         {
             entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
 

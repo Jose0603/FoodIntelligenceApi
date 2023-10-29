@@ -15,6 +15,8 @@ namespace FoodIntelligence.Service
         public AutoMapping()
         {
             CreateMap<CategoriasComidum, CategoriasComidumDto>().ReverseMap();
+            CreateMap<CategoriasComidum, CategoriasComidumDto>().ReverseMap();
+
         }
     }
 }

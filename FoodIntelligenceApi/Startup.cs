@@ -3,6 +3,7 @@ using FoodIntelligence.Data.Autentication;
 using FoodIntelligence.Service;
 using FoodIntelligence.Service.CategoriasComidaServices;
 using FoodIntelligence.Service.Services;
+using FoodIntelligence.Service.Services.CategoriasComidaServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,14 +32,18 @@ namespace FoodIntelligenceApi
             var _GetConnectionString = Configuration.GetConnectionString("connMSSQL");
             services.AddDbContext<FIntelligenceDbContext>(options => options.UseSqlServer(_GetConnectionString));
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(_GetConnectionString));
-
             services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
-
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+
+            //all bll services
             services.AddScoped<ICategoriasComidaService, CategoriasComidaService>();
+            services.AddScoped<IUserInfoService, UserInfoService>();
+
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson();
 

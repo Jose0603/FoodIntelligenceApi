@@ -13,5 +13,5 @@ public partial class UsuariosAlergia
 
     public virtual Alergia? IdalergiaNavigation { get; set; }
 
-    public virtual AspNetUser? IdusuarioNavigation { get; set; }
+    public virtual AspNetUsers? IdusuarioNavigation { get; set; }
 }

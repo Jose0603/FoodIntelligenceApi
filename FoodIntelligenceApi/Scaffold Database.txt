@@ -1,1 +1,4 @@
-﻿Scaffold-DbContext "Server=localhost;Database=FInteligence;User Id=sa;Password=admin123*; TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -context "FIntelligenceDbContext2" -f 
+﻿
+ngrok http https://localhost:5000 --host-header="localhost:5000"
+
+Scaffold-DbContext "Server=localhost;Database=FInteligence;User Id=sa;Password=admin123*; TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -context "FIntelligenceDbContext2" -f 

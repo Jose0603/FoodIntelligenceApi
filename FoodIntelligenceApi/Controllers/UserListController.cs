@@ -1,6 +1,6 @@
 ﻿using FoodIntelligence.Data;
 using FoodIntelligence.Service;
-using FoodIntelligence.Service.CategoriasComidaServices;
+using FoodIntelligence.Service.Services.CategoriasComidaServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

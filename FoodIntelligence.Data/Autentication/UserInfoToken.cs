@@ -14,6 +14,7 @@ namespace FoodIntelligence.Data.Autentication
         public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? FullName { get { return FirstName + " " + LastName; } }
+        public string Id { get; set; }
 
     }
 }

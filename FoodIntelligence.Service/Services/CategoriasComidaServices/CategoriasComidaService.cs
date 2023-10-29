@@ -7,7 +7,7 @@ using FoodIntelligence.Service.Shared;
 using System.Net;
 using System.Security.Claims;
 
-namespace FoodIntelligence.Service.CategoriasComidaServices
+namespace FoodIntelligence.Service.Services.CategoriasComidaServices
 {
     public class CategoriasComidaService : ICategoriasComidaService
     {
