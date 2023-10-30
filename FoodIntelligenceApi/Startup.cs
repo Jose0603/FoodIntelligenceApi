@@ -4,6 +4,7 @@ using FoodIntelligence.Service;
 using FoodIntelligence.Service.CategoriasComidaServices;
 using FoodIntelligence.Service.Services;
 using FoodIntelligence.Service.Services.CategoriasComidaServices;
+using FoodIntelligence.Service.Services.RestaurantesServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,8 @@ namespace FoodIntelligenceApi
 
             //all bll services
             services.AddScoped<ICategoriasComidaService, CategoriasComidaService>();
+            services.AddScoped<IRestaurantesService, RestaurantesService>();
+
             services.AddScoped<IUserInfoService, UserInfoService>();
 
             services.AddCors();

@@ -1,5 +1,6 @@
 ﻿using FoodIntelligence.Data.Repositories.BaseRepositories;
 using FoodIntelligence.Data.Repositories.CategoriasComidaRepositories;
+using FoodIntelligence.Data.Repositories.RestaurantesRepositories;
 using FoodIntelligence.Data.Repositories.UserRepositories;
 using FoodIntelligence.Data.Repositories.UserRepositoryRepositories;
 using System;
@@ -19,6 +20,7 @@ namespace FoodIntelligence.Data
         {
             _databaseContext = databaseContext;
             CategoriasComidaRepository = new CategoriasComidaRepository(databaseContext);
+            RestaurantesRepository = new RestaurantesRepository(databaseContext);
             UserRepository = new UserRepository(databaseContext);
         }
 
@@ -28,6 +30,7 @@ namespace FoodIntelligence.Data
             GC.SuppressFinalize(this);
         }
         public ICategoriasComidaRepository CategoriasComidaRepository { get; private set; }
+        public IRestaurantesRepository RestaurantesRepository { get; private set; }
         public IUserRepository UserRepository { get; private set; }
 
 
