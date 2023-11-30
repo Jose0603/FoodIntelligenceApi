@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FoodIntelligence.Data.Models;
 
@@ -18,6 +19,8 @@ public partial class Restaurante
     public decimal? Longitud { get; set; }
 
     public string? LogoRestaurante { get; set; }
-
+    [NotMapped]
+    public decimal Rating { get; set; }
     public virtual ICollection<Comidum> Comida { get; set; } = new List<Comidum>();
+
 }

@@ -25,6 +25,16 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
         {
             return _dbContext.Set<T>().ToList();
         }
+        public IEnumerable<T> GetAllInclude(string includeProperties)
+        {
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            query = includeProperties.Split(new char[] { ',' },
+                StringSplitOptions.RemoveEmptyEntries).Aggregate(query, (current, includeProperty)
+                => current.Include(includeProperty));
+
+            return query.ToList();
+        }
         public IQueryable<T> FindQueryable(Expression<Func<T, bool>> expression,
             Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
         {
@@ -45,6 +55,7 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
         {
             return _dbContext.Set<T>().ToListAsync(cancellationToken);
         }
+
 
         public Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> expression, string includeProperties)
         {

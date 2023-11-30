@@ -25,6 +25,7 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUsers>
     public virtual DbSet<CategoriasComidum> CategoriasComida { get; set; }
 
     public virtual DbSet<ComidaIngrediente> ComidaIngredientes { get; set; }
+    public virtual DbSet<CodigosVerificacion> CodigosVerificacions { get; set; }
 
     public virtual DbSet<Comidum> Comida { get; set; }
 
@@ -65,6 +66,31 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUsers>
             entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
             entity.Property(e => e.UserName).HasMaxLength(256);
+        });
+        modelBuilder.Entity<CodigosVerificacion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__CodigosV__3213E83F33BB11F0");
+
+            entity.ToTable("CodigosVerificacion");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Codigo)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("codigo");
+            entity.Property(e => e.FechaCreacion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_creacion");
+            entity.Property(e => e.FechaExpiracion)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_expiracion");
+            entity.Property(e => e.UsuarioId)
+                .HasMaxLength(450)
+                .HasColumnName("usuario_id");
+            entity.Property(e => e.Utilizado)
+                .HasDefaultValueSql("((0))")
+                .HasColumnName("utilizado");
         });
 
         modelBuilder.Entity<CategoriasComidum>(entity =>

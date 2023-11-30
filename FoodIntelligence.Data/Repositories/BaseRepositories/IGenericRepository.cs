@@ -12,6 +12,7 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
     {
         T GetById(int id);
         IEnumerable<T> GetAll();
+        IEnumerable<T> GetAllInclude(string includeProperties);
         IQueryable<T> FindQueryable(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null);
         Task<List<T>> FindListAsync(Expression<Func<T, bool>>? expression, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
             CancellationToken cancellationToken = default);

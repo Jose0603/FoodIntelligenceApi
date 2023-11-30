@@ -18,5 +18,5 @@ public partial class RestauranteDto
     public decimal? Longitud { get; set; }
 
     public string? LogoRestaurante { get; set; }
-
+    public decimal Rating { get; set; }
 }

@@ -30,18 +30,32 @@ namespace FoodIntelligence.Service.Services.RestaurantesServices
             CustomHttpResponse response = new CustomHttpResponse();
             try
             {
-                List<Restaurante> listOfEntites = _unitOfWork.RestaurantesRepository.GetAll().ToList();
+                List<Restaurante> listOfEntites = _unitOfWork.RestaurantesRepository.GetAllInclude("Comida.DetallesPedidos.IdpedidoNavigation").ToList();
                 if (listOfEntites != null && listOfEntites.Count > 0 || listOfEntites.Count == 0)
                 {
                     if (listOfEntites.Count > 0)
                     {
+                        foreach (var item in listOfEntites
+                                .Where(x => x.Comida != null && x.Comida.Any(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())))
+                        {
+                            item.Rating = item.Comida
+                                .Where(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())
+                                .SelectMany(comida => comida.DetallesPedidos
+                                    .Where(pedido => pedido.IdpedidoNavigation != null)
+                                    .Select(pedido => pedido.IdpedidoNavigation.Rating))
+                                .DefaultIfEmpty(0) // Handle the case where there are no ratings
+                                .Average();
+
+                        }
                         response.Data = listOfEntites.Select(_mapper.Map<RestauranteDto>).ToList();
+
                     }
                     else if (listOfEntites.Count == 0)
                     {
                         response.Data = new List<object>();
                     }
                 }
+
                 response.Success = true;
                 response.StatusCode = HttpStatusCode.OK;
 

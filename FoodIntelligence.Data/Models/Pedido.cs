@@ -19,7 +19,8 @@ public partial class Pedido
 
     public bool? Entrega { get; set; }
 
-    public TimeSpan? HoraEntregaEstimada { get; set; }
+    public TimeSpan? HoraEntregaPlanificada { get; set; }
+    public decimal Rating { get; set; }
 
     public virtual ICollection<DetallesPedido> DetallesPedidos { get; set; } = new List<DetallesPedido>();
 
