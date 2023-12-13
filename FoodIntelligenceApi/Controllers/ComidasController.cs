@@ -9,7 +9,7 @@ namespace FoodIntelligenceApi.Controllers
 {
     [Route("api/Comidas")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ComidasController : ControllerBase
     {
         protected readonly IComidasService _service;

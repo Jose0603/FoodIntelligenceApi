@@ -88,6 +88,10 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
             _dbContext.Set<T>().Remove(entity);
         }
 
+        public void SaveChanges()
+        {
+            _dbContext.SaveChanges();
+        }    
 
     }
 }

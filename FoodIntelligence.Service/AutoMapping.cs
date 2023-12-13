@@ -17,7 +17,8 @@ namespace FoodIntelligence.Service
             CreateMap<CategoriasComidum, CategoriasComidumDto>().ReverseMap();
             CreateMap<Restaurante, RestauranteDto>().ReverseMap();
             CreateMap<Comidum, ComidumDto>().ReverseMap();
-
+            CreateMap<Pedido, PedidoDto>().ReverseMap();
+            CreateMap<DetallesPedido, DetallesPedidoDto>().ReverseMap();
 
         }
     }
