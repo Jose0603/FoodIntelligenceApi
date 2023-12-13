@@ -136,5 +136,33 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             }
             return response;
         }
+        public async Task<CustomHttpResponse> GetCurrentPedido(string userId)
+        {
+            CustomHttpResponse response = new CustomHttpResponse();
+            try
+            {
+                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos.IdcomidaNavigation").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
+                if (entity != null)
+                {
+                    var data = _mapper.Map<PedidoDto>(entity);
+                    data.DetallesPedido = entity.DetallesPedidos.Select(_mapper.Map<DetallesPedidoDto>).ToList();
+                    response.Data = data;
+                }
+
+                response.Success = true;
+                response.StatusCode = HttpStatusCode.OK;
+
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleErrorWithResponse(
+                    ex,
+                    response,
+                    "Ha ocurrido un error en la base de datos.",
+                    HttpStatusCode.Conflict
+                );
+            }
+            return response;
+        }
     }
 }

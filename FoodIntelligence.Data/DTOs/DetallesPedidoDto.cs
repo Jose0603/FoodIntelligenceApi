@@ -10,6 +10,8 @@ public partial class DetallesPedidoDto
     public int? Idpedido { get; set; }
 
     public int? Idcomida { get; set; }
+    public string? IdcomidaNavigationImagenComida { get; set; }
+    public string? IdcomidaNavigationNombre { get; set; }
 
     public int? Cantidad { get; set; }
 

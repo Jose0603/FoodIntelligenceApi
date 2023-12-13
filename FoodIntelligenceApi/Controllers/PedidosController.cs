@@ -31,6 +31,15 @@ namespace FoodIntelligenceApi.Controllers
             var entity = _service.AddItem(newItem, userId);
             return Ok(entity);
         }
+        [HttpGet]
+        [Route("GetCurrentPedido")]
+        public async Task<IActionResult> GetCurrentPedido()
+        {
+            var userIdClaim = User.FindFirst("UserId");
+            string userId = userIdClaim.Value;
+            var entity = _service.GetCurrentPedido(userId);
+            return Ok(entity);
+        }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FoodIntelligence.Data.Models;
+using System;
 using System.Collections.Generic;
 
 namespace FoodIntelligence.Data.DTOs;
@@ -20,5 +21,7 @@ public partial class PedidoDto
     public bool? Entrega { get; set; }
 
     public TimeSpan? HoraEntregaEstimada { get; set; }
+   public List<DetallesPedidoDto> DetallesPedido { get; set; } = new List<DetallesPedidoDto>();
+
 
 }
