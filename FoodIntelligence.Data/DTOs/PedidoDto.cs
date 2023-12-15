@@ -19,7 +19,7 @@ public partial class PedidoDto
     public decimal? MontoTotal { get; set; }
 
     public bool? Entrega { get; set; }
-
+    public int CantidadTotal { get; set; }
     public TimeSpan? HoraEntregaEstimada { get; set; }
    public List<DetallesPedidoDto> DetallesPedido { get; set; } = new List<DetallesPedidoDto>();
 

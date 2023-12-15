@@ -18,8 +18,10 @@ namespace FoodIntelligenceApi.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<IActionResult> Get(string userId)
+        public async Task<IActionResult> Get()
         {
+            var userIdClaim = User.FindFirst("UserId");
+            string userId = userIdClaim.Value;
             var entityList = _service.GetAll(userId);
             return Ok(entityList);
         }

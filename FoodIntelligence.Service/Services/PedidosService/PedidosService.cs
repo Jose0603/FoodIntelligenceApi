@@ -88,7 +88,7 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             CustomHttpResponse response = new CustomHttpResponse();
             try
             {
-                var entity = _unitOfWork.PedidosRepository.FindQueryable(x => x.Idusuario == userId && x.EstadoPedido == "Abierto").FirstOrDefault();
+                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
                 var comida = _unitOfWork.ComidasRepository.GetById(newItem.Idcomida ?? 0);
                 if (comida != null)
                 {
@@ -98,7 +98,10 @@ namespace FoodIntelligence.Service.Services.PedidosServices
                         var detallePedido = _unitOfWork.DetallesPedidoRepository.FindQueryable(x => x.Idpedido == entity.Id && x.Idcomida == newItem.Idcomida).FirstOrDefault();
                         if (detallePedido != null)
                             if (newItem.Cantidad != 0)
+                            {
+
                                 detallePedido.Cantidad = newItem.Cantidad;
+                            }
                             else
                             {
                                 _unitOfWork.DetallesPedidoRepository.Delete(detallePedido);
@@ -106,8 +109,14 @@ namespace FoodIntelligence.Service.Services.PedidosServices
                         else
                         {
                             newItem.Idpedido = entity.Id;
-                            _unitOfWork.DetallesPedidoRepository.Add(_mapper.Map<DetallesPedido>(newItem));
+                            entity.DetallesPedidos.Add(_mapper.Map<DetallesPedido>(newItem));
                         }
+                        entity.MontoTotal = 0;
+                        foreach (var item in entity.DetallesPedidos)
+                        {
+                            entity.MontoTotal += item.PrecioUnitario * item.Cantidad;
+                        }
+
                         response.Success = true;
                     }
                     else
@@ -117,6 +126,7 @@ namespace FoodIntelligence.Service.Services.PedidosServices
                         newPedido.FechaHoraPedido = DateTime.Now;
                         newPedido.EstadoPedido = "Abierto";
                         newPedido.DetallesPedidos.Add(_mapper.Map<DetallesPedido>(newItem));
+                        newPedido.MontoTotal = newPedido.DetallesPedidos.Sum(x => x.PrecioUnitario * x.Cantidad);
                         _unitOfWork.PedidosRepository.Add(newPedido);
                     }
                 }
@@ -146,6 +156,7 @@ namespace FoodIntelligence.Service.Services.PedidosServices
                 {
                     var data = _mapper.Map<PedidoDto>(entity);
                     data.DetallesPedido = entity.DetallesPedidos.Select(_mapper.Map<DetallesPedidoDto>).ToList();
+                    data.CantidadTotal = entity.DetallesPedidos.Sum(x => x.Cantidad) ?? 0;
                     response.Data = data;
                 }
 

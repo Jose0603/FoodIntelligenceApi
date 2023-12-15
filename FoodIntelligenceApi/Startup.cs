@@ -5,6 +5,7 @@ using FoodIntelligence.Service.CategoriasComidaServices;
 using FoodIntelligence.Service.Services;
 using FoodIntelligence.Service.Services.CategoriasComidaServices;
 using FoodIntelligence.Service.Services.ComidasServices;
+using FoodIntelligence.Service.Services.DetallePedidoServices;
 using FoodIntelligence.Service.Services.PedidosServices;
 using FoodIntelligence.Service.Services.RestaurantesServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,7 +49,7 @@ namespace FoodIntelligenceApi
             services.AddScoped<IRestaurantesService, RestaurantesService>();
             services.AddScoped<IComidasService, ComidasService>();
             services.AddScoped<IPedidosService, PedidosService>();
-
+            services.AddScoped<IDetallePedidoService, DetallePedidoService>();
 
             services.AddScoped<IUserInfoService, UserInfoService>();
 
