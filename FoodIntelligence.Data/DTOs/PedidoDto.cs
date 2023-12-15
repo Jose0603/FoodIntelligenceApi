@@ -21,7 +21,10 @@ public partial class PedidoDto
     public bool? Entrega { get; set; }
     public int CantidadTotal { get; set; }
     public TimeSpan? HoraEntregaEstimada { get; set; }
-   public List<DetallesPedidoDto> DetallesPedido { get; set; } = new List<DetallesPedidoDto>();
+    public int? RestauranteId { get; set; }
+    public string RestauranteName { get; set; }
+    public string RestauranteImagen { get; set; }
+    public List<DetallesPedidoDto> DetallesPedido { get; set; } = new List<DetallesPedidoDto>();
 
 
 }

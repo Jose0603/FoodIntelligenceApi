@@ -31,12 +31,24 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             CustomHttpResponse response = new CustomHttpResponse();
             try
             {
-                List<Pedido> listOfEntites = _unitOfWork.PedidosRepository.GetAll().Where(x => x.Idusuario == userId).ToList();
+                List<Pedido> listOfEntites = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos.IdcomidaNavigation.IdrestauranteNavigation").Where(x => x.Idusuario == userId && x.EstadoPedido != "Abierto").ToList();
                 if (listOfEntites != null && listOfEntites.Count > 0 || listOfEntites.Count == 0)
                 {
                     if (listOfEntites.Count > 0)
                     {
-                        response.Data = listOfEntites.Select(_mapper.Map<PedidoDto>).ToList();
+                        var Data = listOfEntites.Select(_mapper.Map<PedidoDto>).ToList();
+                        foreach (var dat in Data)
+                        {
+                            var entity = listOfEntites.FirstOrDefault(x => x.Id == dat.Id);
+                            if (entity.DetallesPedidos != null && entity.DetallesPedidos.Count > 0)
+                            {
+                                dat.CantidadTotal = entity.DetallesPedidos.Sum(x => x.Cantidad) ?? 0;
+                                dat.RestauranteId = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.Idrestaurante;
+                                dat.RestauranteName = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.IdrestauranteNavigation.NombreRestaurante;
+                                dat.RestauranteImagen = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.IdrestauranteNavigation.LogoRestaurante;
+                            }
+                        }
+                        response.Data = Data;
                     }
                     else if (listOfEntites.Count == 0)
                     {
@@ -88,7 +100,7 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             CustomHttpResponse response = new CustomHttpResponse();
             try
             {
-                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
+                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos.IdcomidaNavigation").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
                 var comida = _unitOfWork.ComidasRepository.GetById(newItem.Idcomida ?? 0);
                 if (comida != null)
                 {
@@ -108,8 +120,13 @@ namespace FoodIntelligence.Service.Services.PedidosServices
                             }
                         else
                         {
+                            if (entity.DetallesPedidos.FirstOrDefault(x => x.IdcomidaNavigation.Idrestaurante != comida.Idrestaurante) != null)
+                                foreach (var diferenteRestaurante in entity.DetallesPedidos)
+                                    _unitOfWork.DetallesPedidoRepository.Delete(diferenteRestaurante);
+
                             newItem.Idpedido = entity.Id;
                             entity.DetallesPedidos.Add(_mapper.Map<DetallesPedido>(newItem));
+                            _unitOfWork.DetallesPedidoRepository.SaveChanges();
                         }
                         entity.MontoTotal = 0;
                         foreach (var item in entity.DetallesPedidos)
@@ -151,12 +168,15 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             CustomHttpResponse response = new CustomHttpResponse();
             try
             {
-                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos.IdcomidaNavigation").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
+                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos.IdcomidaNavigation.IdrestauranteNavigation").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
                 if (entity != null)
                 {
                     var data = _mapper.Map<PedidoDto>(entity);
                     data.DetallesPedido = entity.DetallesPedidos.Select(_mapper.Map<DetallesPedidoDto>).ToList();
                     data.CantidadTotal = entity.DetallesPedidos.Sum(x => x.Cantidad) ?? 0;
+                    data.RestauranteId = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.Idrestaurante;
+                    data.RestauranteName = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.IdrestauranteNavigation.NombreRestaurante;
+
                     response.Data = data;
                 }
 
