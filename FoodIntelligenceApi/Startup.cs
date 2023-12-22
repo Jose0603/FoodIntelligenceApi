@@ -4,6 +4,7 @@ using FoodIntelligence.Service;
 using FoodIntelligence.Service.CategoriasComidaServices;
 using FoodIntelligence.Service.Services;
 using FoodIntelligence.Service.Services.CategoriasComidaServices;
+using FoodIntelligence.Service.Services.ComidaEstimatedRatingServices;
 using FoodIntelligence.Service.Services.ComidasServices;
 using FoodIntelligence.Service.Services.DetallePedidoServices;
 using FoodIntelligence.Service.Services.PedidosServices;
@@ -50,6 +51,8 @@ namespace FoodIntelligenceApi
             services.AddScoped<IComidasService, ComidasService>();
             services.AddScoped<IPedidosService, PedidosService>();
             services.AddScoped<IDetallePedidoService, DetallePedidoService>();
+            services.AddScoped<IComidaEstimatedRatingService, ComidaEstimatedRatingService>();
+
 
             services.AddScoped<IUserInfoService, UserInfoService>();
 

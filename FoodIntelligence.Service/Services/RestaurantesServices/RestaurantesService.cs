@@ -2,10 +2,9 @@
 using FoodIntelligence.Data;
 using FoodIntelligence.Data.DTOs;
 using FoodIntelligence.Data.Models;
-using FoodIntelligence.Data.Repositories.BaseRepositories;
 using FoodIntelligence.Service.Shared;
+using MLModel_ConsoleApp1;
 using System.Net;
-using System.Security.Claims;
 
 namespace FoodIntelligence.Service.Services.RestaurantesServices
 {
@@ -33,11 +32,24 @@ namespace FoodIntelligence.Service.Services.RestaurantesServices
                 List<Restaurante> listOfEntites = _unitOfWork.RestaurantesRepository.GetAllInclude("Comida.DetallesPedidos.IdpedidoNavigation").ToList();
                 if (listOfEntites != null && listOfEntites.Count > 0 || listOfEntites.Count == 0)
                 {
+                    //Load sample data
+                    var sampleData = new MLModel.ModelInput()
+                    {
+                        Idcomida = 5F,
+                        Idusuario = @"4d21e431-b17a-4d00-8543-84a0496fdcd3",
+                        FechaHoraPedido = DateTime.Parse("13/12/2023 11:15:36 p. m."),
+                    };
+
+                    //Load model and predict output
+                    var result = MLModel.Predict(sampleData);
+
+
+
                     if (listOfEntites.Count > 0)
                     {
                         foreach (var item in listOfEntites
                                 .Where(x => x.Comida != null && x.Comida.Any(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())))
-                        {
+                        {                            
                             item.Rating = item.Comida
                                 .Where(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())
                                 .SelectMany(comida => comida.DetallesPedidos

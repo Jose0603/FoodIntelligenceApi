@@ -1,4 +1,5 @@
 ﻿using FoodIntelligence.Data.Repositories.CategoriasComidaRepositories;
+using FoodIntelligence.Data.Repositories.ComidaEstimatedRatingRepositories;
 using FoodIntelligence.Data.Repositories.ComidasRepositories;
 using FoodIntelligence.Data.Repositories.DetallesPedidoRepositories;
 using FoodIntelligence.Data.Repositories.PedidosRepositories;
@@ -24,6 +25,7 @@ namespace FoodIntelligence.Data
             CategoriasComidaRepository = new CategoriasComidaRepository(databaseContext);
             RestaurantesRepository = new RestaurantesRepository(databaseContext);
             ComidasRepository = new ComidasRepository(databaseContext);
+            ComidaEstimatedRatingRepository = new ComidaEstimatedRatingRepository(databaseContext);
             PedidosRepository = new PedidosRepository(databaseContext);
             DetallesPedidoRepository = new DetallesPedidoRepository(databaseContext);
 
@@ -38,6 +40,7 @@ namespace FoodIntelligence.Data
         public ICategoriasComidaRepository CategoriasComidaRepository { get; private set; }
         public IRestaurantesRepository RestaurantesRepository { get; private set; }
         public IComidasRepository ComidasRepository { get; private set; }
+        public IComidaEstimatedRatingRepository ComidaEstimatedRatingRepository { get; private set; }
         public IPedidosRepository PedidosRepository { get; private set; }
         public IDetallesPedidoRepository DetallesPedidoRepository { get; private set; }
         public IUserRepository UserRepository { get; private set; }

@@ -1,5 +1,6 @@
 ﻿using FoodIntelligence.Data.Repositories.BaseRepositories;
 using FoodIntelligence.Data.Repositories.CategoriasComidaRepositories;
+using FoodIntelligence.Data.Repositories.ComidaEstimatedRatingRepositories;
 using FoodIntelligence.Data.Repositories.ComidasRepositories;
 using FoodIntelligence.Data.Repositories.DetallesPedidoRepositories;
 using FoodIntelligence.Data.Repositories.PedidosRepositories;
@@ -18,6 +19,7 @@ namespace FoodIntelligence.Data
         ICategoriasComidaRepository CategoriasComidaRepository { get; }
         IRestaurantesRepository RestaurantesRepository { get; }
         IComidasRepository ComidasRepository { get; }
+        IComidaEstimatedRatingRepository ComidaEstimatedRatingRepository { get; }
         IPedidosRepository PedidosRepository { get; }
         IDetallesPedidoRepository DetallesPedidoRepository { get; }
 

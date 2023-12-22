@@ -40,6 +40,9 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUsers>
     public virtual DbSet<Restaurante> Restaurantes { get; set; }
 
     public virtual DbSet<UsuariosAlergia> UsuariosAlergias { get; set; }
+    public virtual DbSet<ComidaEstimatedRating> ComidaEstimatedRatings { get; set; }
+
+    public virtual DbSet<RestauranteEstimatedRating> RestauranteEstimatedRatings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -66,6 +69,25 @@ public partial class FIntelligenceDbContext : IdentityDbContext<AspNetUsers>
             entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
             entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
             entity.Property(e => e.UserName).HasMaxLength(256);
+        });
+        modelBuilder.Entity<ComidaEstimatedRating>(entity =>
+        {
+            entity.ToTable("ComidaEstimatedRating");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Rating).HasColumnType("numeric(38, 0)");
+            entity.Property(e => e.UsuarioId).HasMaxLength(450);
+        });
+
+        modelBuilder.Entity<RestauranteEstimatedRating>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_RestauranteIdEstimatedRating");
+
+            entity.ToTable("RestauranteEstimatedRating");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Rating).HasColumnType("numeric(38, 0)");
+            entity.Property(e => e.UsuarioId).HasMaxLength(450);
         });
         modelBuilder.Entity<CodigosVerificacion>(entity =>
         {

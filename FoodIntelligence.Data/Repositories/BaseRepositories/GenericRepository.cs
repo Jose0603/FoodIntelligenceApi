@@ -72,6 +72,10 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
         {
             return _dbContext.Set<T>().Add(entity).Entity;
         }
+        public void AddRange(List<T> entity)
+        {
+            _dbContext.Set<T>().AddRange(entity);
+        }
 
         public void Update(T entity)
         {
@@ -87,11 +91,15 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
         {
             _dbContext.Set<T>().Remove(entity);
         }
+        public void DeleteRange(List<T> entity)
+        {
+            _dbContext.Set<T>().RemoveRange(entity);
+        }
 
         public void SaveChanges()
         {
             _dbContext.SaveChanges();
-        }    
+        }
 
     }
 }

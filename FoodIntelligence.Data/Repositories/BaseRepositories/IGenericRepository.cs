@@ -19,9 +19,11 @@ namespace FoodIntelligence.Data.Repositories.BaseRepositories
         Task<List<T>> FindAllAsync(CancellationToken cancellationToken);
         Task<T?> SingleOrDefaultAsync(Expression<Func<T, bool>> expression, string includeProperties);
         T Add(T entity);
+        void AddRange(List<T> entity);
         void Update(T entity);
         void UpdateRange(IEnumerable<T> entities);
         void Delete(T entity);
+        void DeleteRange(List<T> entity);
         void SaveChanges();
     }
 }

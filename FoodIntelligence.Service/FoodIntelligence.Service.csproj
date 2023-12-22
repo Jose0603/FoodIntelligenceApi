@@ -13,12 +13,14 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Dapper" Version="2.1.24" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FoodIntelligence.Data\FoodIntelligence.Data.csproj" />
+    <ProjectReference Include="..\MLModel_ConsoleApp1\MLModel_ConsoleApp1.csproj" />
   </ItemGroup>
 
 </Project>
