@@ -17,13 +17,14 @@ public partial class PedidoDto
     public string? DireccionEntrega { get; set; }
 
     public decimal? MontoTotal { get; set; }
-
+    public decimal Rating { get; set; }
     public bool? Entrega { get; set; }
     public int CantidadTotal { get; set; }
     public TimeSpan? HoraEntregaEstimada { get; set; }
     public int? RestauranteId { get; set; }
-    public string RestauranteName { get; set; }
-    public string RestauranteImagen { get; set; }
+    public string? RestauranteName { get; set; }
+    public string? RestauranteImagen { get; set; }
+    public bool? isRated { get; set; }
     public List<DetallesPedidoDto> DetallesPedido { get; set; } = new List<DetallesPedidoDto>();
 
 

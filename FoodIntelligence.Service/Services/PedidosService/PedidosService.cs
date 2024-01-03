@@ -91,9 +91,65 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             throw new NotImplementedException();
         }
 
-        public Task<CustomHttpResponse> Update(PedidoDto toEdit)
+        public async Task<CustomHttpResponse> Update(PedidoDto toEdit)
         {
-            throw new NotImplementedException();
+            CustomHttpResponse response = new CustomHttpResponse();
+            try
+            {
+                var entity = _unitOfWork.PedidosRepository.GetById(toEdit.Id);
+
+                if (entity != null)
+                {
+                    if (entity.EstadoPedido != toEdit.EstadoPedido)
+                        entity.EstadoPedido = toEdit.EstadoPedido;
+                    if (entity.Rating != toEdit.Rating)
+                        entity.Rating = toEdit.Rating;
+                    if (entity.FechaHoraPedido != toEdit.FechaHoraPedido)
+                        entity.FechaHoraPedido = toEdit.FechaHoraPedido;
+                }
+                _unitOfWork.PedidosRepository.SaveChanges();
+                response.StatusCode = HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleErrorWithResponse(
+                    ex,
+                    response,
+                    "Ha ocurrido un error en la base de datos.",
+                    HttpStatusCode.Conflict
+                );
+            }
+            return response;
+        }
+        public async Task<CustomHttpResponse> UpdateRating(PedidoDto toEdit)
+        {
+            CustomHttpResponse response = new CustomHttpResponse();
+            try
+            {
+                var entity = _unitOfWork.PedidosRepository.GetById(toEdit.Id);
+
+                if (entity != null)
+                {
+                    if (entity.Rating != toEdit.Rating)
+                    {
+
+                        entity.Rating = toEdit.Rating;
+                        entity.isRated = true;
+                    }
+                }
+                _unitOfWork.PedidosRepository.SaveChanges();
+                response.StatusCode = HttpStatusCode.OK;
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleErrorWithResponse(
+                    ex,
+                    response,
+                    "Ha ocurrido un error en la base de datos.",
+                    HttpStatusCode.Conflict
+                );
+            }
+            return response;
         }
         public async Task<CustomHttpResponse> AddItem(DetallesPedidoDto newItem, string userId)
         {
@@ -149,8 +205,8 @@ namespace FoodIntelligence.Service.Services.PedidosServices
                 }
                 else
                     response.Success = false;
-                response.StatusCode = HttpStatusCode.OK;
                 _unitOfWork.DetallesPedidoRepository.SaveChanges();
+                response.StatusCode = HttpStatusCode.OK;
             }
             catch (Exception ex)
             {
@@ -168,15 +224,20 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             CustomHttpResponse response = new CustomHttpResponse();
             try
             {
-                var entity = _unitOfWork.PedidosRepository.GetAllInclude("DetallesPedidos.IdcomidaNavigation.IdrestauranteNavigation").FirstOrDefault(x => x.Idusuario == userId && x.EstadoPedido == "Abierto");
-                if (entity != null)
-                {
-                    var data = _mapper.Map<PedidoDto>(entity);
-                    data.DetallesPedido = entity.DetallesPedidos.Select(_mapper.Map<DetallesPedidoDto>).ToList();
-                    data.CantidadTotal = entity.DetallesPedidos.Sum(x => x.Cantidad) ?? 0;
-                    data.RestauranteId = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.Idrestaurante;
-                    data.RestauranteName = entity.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.IdrestauranteNavigation.NombreRestaurante;
+                Expression<Func<Pedido, bool>> predicate = pedido => pedido.Idusuario == userId && pedido.EstadoPedido == "Abierto";
 
+                var entity = _unitOfWork.PedidosRepository.SingleOrDefaultAsync(predicate, "DetallesPedidos.IdcomidaNavigation.IdrestauranteNavigation");
+
+                if (entity.Result != null)
+                {
+                    var data = _mapper.Map<PedidoDto>(entity.Result);
+                    data.DetallesPedido = entity.Result.DetallesPedidos.Select(_mapper.Map<DetallesPedidoDto>).ToList();
+                    data.CantidadTotal = entity.Result.DetallesPedidos.Sum(x => x.Cantidad) ?? 0;
+                    if (entity.Result.DetallesPedidos != null && entity.Result.DetallesPedidos.Count > 0)
+                    {
+                        data.RestauranteId = entity.Result.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.Idrestaurante;
+                        data.RestauranteName = entity.Result.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.IdrestauranteNavigation.NombreRestaurante;
+                    }
                     response.Data = data;
                 }
 

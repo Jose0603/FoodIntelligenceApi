@@ -24,7 +24,7 @@ namespace FoodIntelligence.Service.Services.RestaurantesServices
             throw new NotImplementedException();
         }
 
-        public async Task<CustomHttpResponse> GetAll()
+        public async Task<CustomHttpResponse> GetAll(string userId)
         {
             CustomHttpResponse response = new CustomHttpResponse();
             try
@@ -32,34 +32,41 @@ namespace FoodIntelligence.Service.Services.RestaurantesServices
                 List<Restaurante> listOfEntites = _unitOfWork.RestaurantesRepository.GetAllInclude("Comida.DetallesPedidos.IdpedidoNavigation").ToList();
                 if (listOfEntites != null && listOfEntites.Count > 0 || listOfEntites.Count == 0)
                 {
-                    //Load sample data
-                    var sampleData = new MLModel.ModelInput()
-                    {
-                        Idcomida = 5F,
-                        Idusuario = @"4d21e431-b17a-4d00-8543-84a0496fdcd3",
-                        FechaHoraPedido = DateTime.Parse("13/12/2023 11:15:36 p. m."),
-                    };
-
-                    //Load model and predict output
-                    var result = MLModel.Predict(sampleData);
-
-
 
                     if (listOfEntites.Count > 0)
                     {
-                        foreach (var item in listOfEntites
-                                .Where(x => x.Comida != null && x.Comida.Any(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())))
-                        {                            
-                            item.Rating = item.Comida
-                                .Where(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())
-                                .SelectMany(comida => comida.DetallesPedidos
-                                    .Where(pedido => pedido.IdpedidoNavigation != null)
-                                    .Select(pedido => pedido.IdpedidoNavigation.Rating))
-                                .DefaultIfEmpty(0) // Handle the case where there are no ratings
-                                .Average();
 
+                        var recomendaciones = _unitOfWork.RestauranteEstimatedRatingRepository.GetAll().Where(x => x.UsuarioId == userId).ToList();
+
+                        if (recomendaciones == null || recomendaciones.Count == 0)
+                        {
+                            foreach (var item in listOfEntites
+                                .Where(x => x.Comida != null && x.Comida.Any(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())))
+                            {
+                                item.Rating = Math.Round(item.Comida
+                                    .Where(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())
+                                    .SelectMany(comida => comida.DetallesPedidos
+                                        .Where(pedido => pedido.IdpedidoNavigation != null)
+                                        .Select(pedido => pedido.IdpedidoNavigation.Rating))
+                                    .DefaultIfEmpty(0) // Handle the case where there are no ratings
+                                    .Average(), 2);
+
+                            }
+                            response.Data = listOfEntites.Select(_mapper.Map<RestauranteDto>).ToList();
                         }
-                        response.Data = listOfEntites.Select(_mapper.Map<RestauranteDto>).ToList();
+                        else
+                        {
+                            foreach (var item in listOfEntites
+                                .Where(x => x.Comida != null && x.Comida.Any(q => q.DetallesPedidos != null && q.DetallesPedidos.Any())))
+                            {
+                                item.Rating = Math.Round(recomendaciones.FirstOrDefault(x => x.RestauranteId == item.Id).Rating ?? 0, 2);
+
+                            }
+
+                            response.Data = listOfEntites.Select(_mapper.Map<RestauranteDto>)
+                                .OrderByDescending(x => recomendaciones.First(rating => rating.RestauranteId == x.Id).Rating).ToList();
+                        }
+
 
                     }
                     else if (listOfEntites.Count == 0)

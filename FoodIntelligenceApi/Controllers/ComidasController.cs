@@ -21,7 +21,9 @@ namespace FoodIntelligenceApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int idRestaurante)
         {
-            var entityList= _service.GetAll(idRestaurante);
+            var userIdClaim = User.FindFirst("UserId");
+            string userId = userIdClaim.Value;
+            var entityList = _service.GetAll(idRestaurante, userId);
             return Ok(entityList);
         }
     }

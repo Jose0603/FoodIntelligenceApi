@@ -42,6 +42,18 @@ namespace FoodIntelligenceApi.Controllers
             var entity = _service.GetCurrentPedido(userId);
             return Ok(entity);
         }
-
+        [HttpPut]
+        public async Task<IActionResult> Update(PedidoDto toEdit)
+        {
+            var entity = _service.Update(toEdit);
+            return Ok(entity);
+        }
+        [HttpPut]
+        [Route("UpdateRating")]
+        public async Task<IActionResult> UpdateRating(PedidoDto toEdit)
+        {
+            var entity = _service.UpdateRating(toEdit);
+            return Ok(entity);
+        }
     }
 }

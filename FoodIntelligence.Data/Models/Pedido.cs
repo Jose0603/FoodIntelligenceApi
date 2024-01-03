@@ -21,7 +21,7 @@ public partial class Pedido
 
     public TimeSpan? HoraEntregaPlanificada { get; set; }
     public decimal Rating { get; set; }
-
+    public bool? isRated { get; set; }
     public virtual ICollection<DetallesPedido> DetallesPedidos { get; set; } = new List<DetallesPedido>();
 
    public virtual AspNetUsers? IdusuarioNavigation { get; set; }

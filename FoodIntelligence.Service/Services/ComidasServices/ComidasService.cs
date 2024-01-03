@@ -25,7 +25,7 @@ namespace FoodIntelligence.Service.Services.ComidasServices
             throw new NotImplementedException();
         }
 
-        public async Task<CustomHttpResponse> GetAll(int restauranteId)
+        public async Task<CustomHttpResponse> GetAll(int restauranteId, string userId)
         {
             CustomHttpResponse response = new CustomHttpResponse();
             try
@@ -35,7 +35,13 @@ namespace FoodIntelligence.Service.Services.ComidasServices
                 {
                     if (listOfEntites.Count > 0)
                     {
-                        response.Data = listOfEntites.Select(_mapper.Map<ComidumDto>).ToList();
+                        var recomendaciones = _unitOfWork.ComidaEstimatedRatingRepository.GetAll().Where(x => x.UsuarioId == userId).ToList();
+                        if (recomendaciones == null || recomendaciones.Count == 0)
+                            response.Data = listOfEntites.Select(_mapper.Map<ComidumDto>).ToList();
+                        else
+                            response.Data = listOfEntites.Select(_mapper.Map<ComidumDto>)
+                                .OrderByDescending(x => recomendaciones.First(rating => rating.ComidaId == x.Id).Rating).ToList();
+
                     }
                     else if (listOfEntites.Count == 0)
                     {

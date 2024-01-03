@@ -57,7 +57,7 @@ namespace FoodIntelligence.Service.Services.ComidaEstimatedRatingServices
                         {
                             UsuarioId = user.Id,
                             ComidaId = food.Id,
-                            Rating = (decimal?)(result.Score != result.Score ? 0 : result.Score)
+                            Rating = result.Score != result.Score ? 0 : (decimal?)result.Score
                         });
                     }
 

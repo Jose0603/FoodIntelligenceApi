@@ -10,7 +10,7 @@ namespace FoodIntelligence.Service.Services.RestaurantesServices
 {
     public interface IRestaurantesService
     {
-        Task<CustomHttpResponse> GetAll();
+        Task<CustomHttpResponse> GetAll(string userId);
         Task<CustomHttpResponse> GetAllWithSearchParam(string SearchParam);
         Task<CustomHttpResponse> GetAllWithPagination(int PageNumber);
         Task<CustomHttpResponse> GetAllWithPaginationAndSearchParam(int PageNumber, string SearchParam);
