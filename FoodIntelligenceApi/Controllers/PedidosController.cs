@@ -42,6 +42,13 @@ namespace FoodIntelligenceApi.Controllers
             var entity = _service.GetCurrentPedido(userId);
             return Ok(entity);
         }
+        [HttpGet]
+        [Route("GetPedidoId")]
+        public async Task<IActionResult> GetPedidoId(long pedidoId)
+        {
+            var entity = _service.GetPedidoWithId(pedidoId);
+            return Ok(entity);
+        }
         [HttpPut]
         public async Task<IActionResult> Update(PedidoDto toEdit)
         {

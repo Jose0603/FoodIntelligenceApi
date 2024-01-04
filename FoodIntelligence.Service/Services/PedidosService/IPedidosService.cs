@@ -20,5 +20,6 @@ namespace FoodIntelligence.Service.Services.PedidosServices
         Task<CustomHttpResponse> UpdateRating(PedidoDto toEdit);
         Task<CustomHttpResponse> AddItem(DetallesPedidoDto newItem, string userId);
         Task<CustomHttpResponse> GetCurrentPedido(string userId);
+        Task<CustomHttpResponse> GetPedidoWithId(long pedidoId);
     }
 }

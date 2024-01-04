@@ -256,5 +256,42 @@ namespace FoodIntelligence.Service.Services.PedidosServices
             }
             return response;
         }
+        public async Task<CustomHttpResponse> GetPedidoWithId(long pedidoId)
+        {
+            CustomHttpResponse response = new CustomHttpResponse();
+            try
+            {
+                Expression<Func<Pedido, bool>> predicate = pedido => pedido.Id == pedidoId;
+
+                var entity = _unitOfWork.PedidosRepository.SingleOrDefaultAsync(predicate, "DetallesPedidos.IdcomidaNavigation.IdrestauranteNavigation");
+
+                if (entity.Result != null)
+                {
+                    var data = _mapper.Map<PedidoDto>(entity.Result);
+                    data.DetallesPedido = entity.Result.DetallesPedidos.Select(_mapper.Map<DetallesPedidoDto>).ToList();
+                    data.CantidadTotal = entity.Result.DetallesPedidos.Sum(x => x.Cantidad) ?? 0;
+                    if (entity.Result.DetallesPedidos != null && entity.Result.DetallesPedidos.Count > 0)
+                    {
+                        data.RestauranteId = entity.Result.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.Idrestaurante;
+                        data.RestauranteName = entity.Result.DetallesPedidos.FirstOrDefault().IdcomidaNavigation.IdrestauranteNavigation.NombreRestaurante;
+                    }
+                    response.Data = data;
+                }
+
+                response.Success = true;
+                response.StatusCode = HttpStatusCode.OK;
+
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.HandleErrorWithResponse(
+                    ex,
+                    response,
+                    "Ha ocurrido un error en la base de datos.",
+                    HttpStatusCode.Conflict
+                );
+            }
+            return response;
+        }
     }
 }
