@@ -17,6 +17,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace FoodIntelligenceApi
 {
@@ -44,6 +46,19 @@ namespace FoodIntelligenceApi
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
+            services.AddHangfire(configuration => configuration
+                   .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                   .UseSimpleAssemblyNameTypeSerializer()
+                   .UseRecommendedSerializerSettings()
+                   .UseSqlServerStorage(Configuration.GetConnectionString("connMSSQL"), new SqlServerStorageOptions
+                   {
+                       CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                       SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                       QueuePollInterval = TimeSpan.Zero,
+                       UseRecommendedIsolationLevel = true,
+                       DisableGlobalLocks = true
+                   }));
+            services.AddHangfireServer();
 
             //all bll services
             services.AddScoped<ICategoriasComidaService, CategoriasComidaService>();
@@ -122,6 +137,9 @@ namespace FoodIntelligenceApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FoodIntelligenceApi v1"));
                 // app.UseHangfireDashboard();
             }
+
+            var pdc = serviceProvider.GetService<IComidaEstimatedRatingService>();
+            RecurringJob.AddOrUpdate(() => pdc.CreateAll(), Cron.Minutely());
 
             app.UseHttpsRedirection();
 
