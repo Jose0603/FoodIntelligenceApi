@@ -139,7 +139,7 @@ namespace FoodIntelligenceApi
             }
 
             var pdc = serviceProvider.GetService<IComidaEstimatedRatingService>();
-            RecurringJob.AddOrUpdate(() => pdc.CreateAll(), Cron.Minutely());
+            RecurringJob.AddOrUpdate(() => pdc.CreateAll(), Cron.Hourly());
 
             app.UseHttpsRedirection();
 
